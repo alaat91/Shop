@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-//const csurf = require("tiny-csrf");
+const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
 const { doubleCsrf } = require("csrf-csrf");
 
@@ -60,6 +60,7 @@ app.use(
     store: store,
   })
 );
+app.use(flash());
 app.use(cookieParser(COOKIES_SECRET));
 //app.use(csrfProtection);
 app.use(doubleCsrfProtection);
@@ -90,12 +91,12 @@ app.use((req, res, next) => {
 });
 
 // Logging middleware for CSRF tokens
-app.use((req, res, next) => {
-  console.log("CSRF Cookie:", req.cookies[CSRF_COOKIE_NAME]); // Logs the CSRF token stored in the cookie
-  console.log("Request CSRF Token:", req.body._csrf); // Logs the CSRF token sent in the request body (e.g., from a POST request)
-  console.log("Expected CSRF Token (generated):", req.csrfToken());
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log("CSRF Cookie:", req.cookies[CSRF_COOKIE_NAME]); // Logs the CSRF token stored in the cookie
+//   console.log("Request CSRF Token:", req.body._csrf); // Logs the CSRF token sent in the request body (e.g., from a POST request)
+//   console.log("Expected CSRF Token (generated):", req.csrfToken());
+//   next();
+// });
 
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);

@@ -6,6 +6,8 @@ const adminController = require("../controllers/admin");
 
 const isAuth = require("../middleware/is-auth");
 
+const { check, body } = require("express-validator/check");
+
 const router = express.Router();
 
 // /admin/add-product => GET
@@ -15,9 +17,25 @@ router.get("/add-product", isAuth, adminController.getAddProduct);
 router.get("/products", isAuth, adminController.getProducts);
 
 // /admin/add-product => POST
-router.post("/add-product", isAuth, adminController.postAddProduct);
+router.post(
+  "/add-product",
+  isAuth,
+  [
+    check("imageUrl").isURL().withMessage("Please enter valid URL"),
+    check("price").isNumeric().withMessage("Price enter a valid price"),
+  ],
+  adminController.postAddProduct
+);
 
-router.get("/edit-product/:productId", isAuth, adminController.getEditProduct);
+router.get(
+  "/edit-product/:productId",
+  isAuth,
+  [
+    check("imageUrl").isURL().withMessage("Please enter valid URL"),
+    check("price").isNumeric().withMessage("Price enter a valid price"),
+  ],
+  adminController.getEditProduct
+);
 
 router.post("/edit-product", isAuth, adminController.postEditProduct);
 

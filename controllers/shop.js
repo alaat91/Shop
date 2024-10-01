@@ -1,10 +1,11 @@
 const Product = require("../models/product");
 const Order = require("../models/order");
 
+const mailer = require("../util/mailService");
+
 exports.getProducts = (req, res, next) => {
   Product.find()
     .then((products) => {
-      console.log(products);
       res.render("shop/product-list", {
         prods: products,
         pageTitle: "All Products",
@@ -102,6 +103,19 @@ exports.postOrder = (req, res, next) => {
     })
     .then(() => {
       res.redirect("/orders");
+      const order = Order.find({ email: req.user.email }).then((result) => {
+        console.log("Order result: ", result);
+        const emailToSend = {
+          to: req.user.email,
+          from: "alaataleb424@gmail.com",
+          subject: `Hi Ouras (Mayes)!!`,
+          text: `Thanks for being so cute!! \n This is what you have ordered beside my heart: \n Orders: ${result.products}`,
+          html: "<h1>Sleep thight and Sweet Dreams!</h1>",
+        };
+        return mailer.sendMail(emailToSend).catch((err) => {
+          console.log(err);
+        });
+      });
     })
     .catch((err) => console.log(err));
 };
