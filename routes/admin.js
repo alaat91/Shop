@@ -20,25 +20,19 @@ router.get("/products", isAuth, adminController.getProducts);
 router.post(
   "/add-product",
   isAuth,
-  [
-    check("imageUrl").isURL().withMessage("Please enter valid URL"),
-    check("price").isNumeric().withMessage("Price enter a valid price"),
-  ],
+  [check("price").isNumeric().withMessage("Price enter a valid price")],
   adminController.postAddProduct
 );
 
 router.get(
   "/edit-product/:productId",
   isAuth,
-  [
-    check("imageUrl").isURL().withMessage("Please enter valid URL"),
-    check("price").isNumeric().withMessage("Price enter a valid price"),
-  ],
+  [check("price").isNumeric().withMessage("Price enter a valid price")],
   adminController.getEditProduct
 );
 
 router.post("/edit-product", isAuth, adminController.postEditProduct);
 
-router.post("/delete-product", isAuth, adminController.postDeleteProduct);
+router.delete("/product/:productId", isAuth, adminController.deleteProduct);
 
 module.exports = router;

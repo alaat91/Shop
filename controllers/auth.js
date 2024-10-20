@@ -55,7 +55,11 @@ exports.postLogin = (req, res, next) => {
           res.redirect("/login");
         });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.getSignup = (req, res, next) => {
@@ -108,9 +112,9 @@ exports.postSignup = (req, res, next) => {
           const emailToSend = {
             to: email,
             from: "alaataleb424@gmail.com",
-            subject: `Hi Ouras (Mayes)!!`,
-            text: "Welcome to my life",
-            html: "<h1>I wanna kiss you baby!</h1>",
+            subject: `Hi ${email}`,
+            text: "Welcome!",
+            html: "<h1>Welcome! I hope you have a wonderful experience visiting our shop.</h1>",
           };
           return mailer.sendMail(emailToSend).catch((err) => {
             console.log(err);
@@ -118,7 +122,11 @@ exports.postSignup = (req, res, next) => {
         });
     })
 
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.postLogout = (req, res, next) => {
@@ -200,7 +208,9 @@ exports.getNewPassword = (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
 };
 
@@ -228,6 +238,8 @@ exports.postNewPassword = (req, res, next) => {
       res.redirect("/login");
     })
     .catch((err) => {
-      console.log(err);
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
 };
