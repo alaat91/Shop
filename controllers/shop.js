@@ -218,8 +218,8 @@ exports.getCheckoutSuccess = (req, res, next) => {
                  <b>Orders:</b> 
                  
                  <ul>
-                 ${result.product.map((p) => {
-                   return <li>${p}</li>;
+                 ${result.map((p) => {
+                   return `<li>${p}</li>`;
                  })}
                  </ul>
                 `,
