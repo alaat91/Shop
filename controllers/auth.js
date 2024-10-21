@@ -111,7 +111,7 @@ exports.postSignup = (req, res, next) => {
           res.redirect("/login");
           const emailToSend = {
             to: email,
-            from: "alaataleb424@gmail.com",
+            from:  process.env.EMAIL_SENDER,
             subject: `Hi ${email}`,
             text: "Welcome!",
             html: "<h1>Welcome! I hope you have a wonderful experience visiting our shop.</h1>",
@@ -173,7 +173,7 @@ exports.postReset = (req, res, next) => {
         res.redirect("/");
         return mailer.sendMail({
           to: email,
-          from: "alaataleb424@gmail.com",
+          from: process.env.EMAIL_SENDER,
           subject: `Password Reset`,
           html: `<p>You requested password reset</p>
                  <p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to set a new password</p>
