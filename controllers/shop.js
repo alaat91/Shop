@@ -215,8 +215,14 @@ exports.getCheckoutSuccess = (req, res, next) => {
           subject: `Hello!`,
           html: `<h1>Thanks you for visiting our website!</h1>
                  This is what you have ordered:
-                 <<b>Orders:</b> 
-                 ${result.products}`,
+                 <b>Orders:</b> 
+                 
+                 <ul>
+                 ${result.product.map((p) => {
+                   return <li>${p}</li>;
+                 })}
+                 </ul>
+                `,
         };
         return mailer.sendMail(emailToSend).catch((err) => {
           console.log(err);
@@ -254,16 +260,6 @@ exports.postOrder = (req, res, next) => {
       res.redirect("/orders");
       const order = Order.find({ email: req.user.email }).then((result) => {
         console.log("Order result: ", result);
-        const emailToSend = {
-          to: req.user.email,
-          from: process.env.EMAIL_SENDER,
-          subject: `Hi Ouras (Mayes)!!`,
-          text: `Thanks for being so cute!! \n This is what you have ordered beside my heart: \n Orders: ${result.products}`,
-          html: "<h1>Sleep thight and Sweet Dreams!</h1>",
-        };
-        return mailer.sendMail(emailToSend).catch((err) => {
-          console.log(err);
-        });
       });
     })
     .catch((err) => {
